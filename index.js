@@ -10,11 +10,13 @@ app.use(
   })
 )
 
+app.use(express.static('public'))
+
 app.engine('handlebars', handlebars.engine())
 app.set('view engine', 'handlebars')
 
 app.get('/', (request, response) => {
-  response.send('<h1>Tela inicial</h1>')
+  response.render('financas', {})
 })
 
 app.listen(3000, () => {
