@@ -2,6 +2,11 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const { SERVER_PORT } = require('./.env')
 
+// const contas = require('./scripts/contas')
+// const transacoes = require('./scripts/transacoes')
+
+let registroTransacoes = []
+
 const app = express()
 
 app.use(
@@ -21,8 +26,13 @@ app.get('/', (request, response) => {
 })
 
 //Cadastro
-app.get('/contas', (request, response) => {
-  response.send('<h1>Não finalizado ainda</h1>')
+app.get('/conta/cadastro', (request, response) => {
+  response.render('financas', {})
+})
+
+//Conta única
+app.get('/conta/:id', (request, response) => {
+
 })
 
 app.listen(3000, () => {
