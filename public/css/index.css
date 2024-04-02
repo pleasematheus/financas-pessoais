@@ -4,3 +4,8 @@
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+*::selection {
+  background-color: #496989;
+  color: #E2F4C5;
+}
