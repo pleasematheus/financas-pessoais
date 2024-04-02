@@ -2,8 +2,8 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const { SERVER_PORT } = require('./.env')
 
-// const contas = require('./scripts/contas')
-// const transacoes = require('./scripts/transacoes')
+const contas = require('./scripts/contas')
+const transacoes = require('./scripts/transacoes')
 
 let registroTransacoes = []
 
@@ -22,12 +22,12 @@ app.set('view engine', 'handlebars')
 
 //Home
 app.get('/', (request, response) => {
-  response.render('financas', {})
+  response.render('transacoes', {transacoes})
 })
 
 //Cadastro
 app.get('/conta/cadastro', (request, response) => {
-  response.render('financas', {})
+  response.render('transacoes', { transacoes })
 })
 
 //Conta única

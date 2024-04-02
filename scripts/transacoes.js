@@ -1,4 +1,4 @@
-export default class Transacao {
+module.exports = class Transacao {
   #id
   #nome
   #valor
@@ -19,5 +19,13 @@ export default class Transacao {
 
   get getValor() {
     return this.#valor
+  }
+
+  set setNome(novoNome) {
+    this.#nome = novoNome
+  }
+
+  set setValor(novoValor) {
+    this.#valor = novoValor
   }
 }

@@ -1,4 +1,4 @@
-export default class Contas {
+module.exports = class Contas {
   #nome
   #categoria
   #descricao
@@ -19,5 +19,17 @@ export default class Contas {
 
   get getDescricao() {
     return this.#descricao
+  }
+
+  set setNome(novoNome) {
+    this.#nome = novoNome
+  }
+
+  set setCategoria(novaCategoria) {
+    this.#categoria = novaCategoria
+  }
+
+  set setDescricao(novaDescricao) {
+    this.#descricao = novaDescricao
   }
 }
