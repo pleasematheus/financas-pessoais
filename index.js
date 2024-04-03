@@ -25,8 +25,13 @@ app.get('/', (request, response) => {
   response.render('transacoes', {transacoes})
 })
 
+//Contas
+app.get('/conta', (request, response) => {
+  response.render('contas', {transacoes})
+})
+
 //Cadastro
-app.get('/conta/cadastro', (request, response) => {
+app.post('/conta/', (request, response) => {
   response.render('transacoes', { transacoes })
 })
 

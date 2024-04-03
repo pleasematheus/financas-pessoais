@@ -22,6 +22,7 @@
       type="text/css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   </head>
   <body>
     <div class="navbar bg-base-100 backdrop-blur">
@@ -45,8 +46,8 @@
             tabindex="0"
             class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li><a href="/">Página inicial</a></li>
-            <li><a href="/conta/">Contas</a></li>
+            <li><a href="/"><i class="bi bi-house"></i> Página inicial</a></li>
+            <li><a href="/conta/"><i class="bi bi-receipt"></i> Contas</a></li>
           </ul>
         </div>
       </div>
@@ -87,25 +88,6 @@
     </div>
 
     <main>
-      <div class="text-center my-3">
-        <button
-          class="btn btn-accent md:btn-md"
-          onclick="my_modal_5.showModal()"
-        >Cadastrar transação</button>
-        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-          <div class="modal-box">
-            <h3 class="font-bold text-lg">Registre sua transação</h3>
-            <p class="py-4">Insira as informações da sua transação</p>
-            <div class="modal-action">
-              <form method="dialog" class="w-full flex justify-between">
-                <button class="btn btn-error">Cancelar</button>
-                <button class="btn btn-accent">Cadastrar</button>
-              </form>
-            </div>
-          </div>
-        </dialog>
-      </div>
-
       {{{body}}}
     </main>
 
