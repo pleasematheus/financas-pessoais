@@ -30,6 +30,10 @@ app.get('/conta/:id', (request, response) => {
   response.render('transacoes', { transacoes })
 })
 
+app.get('/conta', (request, response) => {
+  response.redirect('/')
+})
+
 //404
 app.all('*', (request, response) => {
   response.status(404).render('404', {})
