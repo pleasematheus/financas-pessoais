@@ -25,21 +25,12 @@ app.get('/', (request, response) => {
   response.render('transacoes', { transacoes })
 })
 
-//Contas
-app.get('/conta', (request, response) => {
-  response.render('contas', { transacoes })
-})
-
-//Cadastro
-app.post('/conta/', (request, response) => {
-  response.render('transacoes', { transacoes })
-})
-
 //Conta única
 app.get('/conta/:id', (request, response) => {
   response.render('transacoes', { transacoes })
 })
 
+//404
 app.all('*', (request, response) => {
   response.status(404).render('404', {})
 })

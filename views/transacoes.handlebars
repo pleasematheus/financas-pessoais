@@ -1,16 +1,31 @@
 <div class="text-center my-3">
-  <button
-    class="btn btn-accent md:btn-md"
-    onclick="my_modal_5.showModal()"
-  ><i class="bi bi-plus-lg"></i> Cadastrar transação</button>
+  <button class="btn btn-accent md:btn-md" onclick="my_modal_5.showModal()"><i
+      class="bi bi-plus-lg"
+    ></i>
+    Cadastrar transação</button>
   <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Registre sua transação</h3>
       <p class="py-4">Insira as informações da sua transação</p>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="rounded-xl border-solid border-2 border-[#496989] p-3 w-1/2 max-w-xl"
+        >
+          <input
+            type="text"
+            placeholder="Nome"
+            class="input input-bordered w-full max-w-xs"
+          />
+        </div>
+      </div>
+
       <div class="modal-action">
         <form method="dialog" class="w-full flex justify-between">
-          <button class="btn btn-error"><i class="bi bi-x-lg"></i> Cancelar</button>
-          <button class="btn btn-accent"><i class="bi bi-plus-lg"></i> Cadastrar</button>
+          <button class="btn btn-error"><i class="bi bi-x-lg"></i>
+            Cancelar</button>
+          <button class="btn btn-accent"><i class="bi bi-plus-lg"></i>
+            Cadastrar</button>
         </form>
       </div>
     </div>
@@ -40,5 +55,6 @@
       </tbody>
     </table>
   </div>
+
 
 </div>
