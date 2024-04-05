@@ -2,7 +2,6 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const { SERVER_PORT } = require('./.env')
 
-const contas = require('./scripts/contas')
 const transacoes = require('./scripts/transacoes')
 
 let registroTransacoes = []
@@ -22,7 +21,25 @@ app.set('view engine', 'handlebars')
 
 //Home
 app.get('/', (request, response) => {
-  response.render('transacoes', { transacoes })
+  response.render('transacoes', { registroTransacoes })
+})
+
+//Conta criada
+app.post('/', (request, response) => {
+  const transacao = `{
+    "id": "${registroTransacoes.length+1}",
+    "nome": "${request.body.nome}",
+    "valor": "${parseFloat(request.body.valor)
+    .toFixed(2)}",
+    "movimentacao": "${request.body.movimentacao}",
+    "opcao": "${request.body.opcao}"
+  }`
+
+  registroTransacoes.push(JSON.parse(transacao))
+
+  console.log(registroTransacoes)
+
+  response.redirect('/');
 })
 
 //Conta única
@@ -36,7 +53,7 @@ app.get('/conta', (request, response) => {
 
 //404
 app.all('*', (request, response) => {
-  response.status(404).render('404', {})
+  response.status(404).render('erro')
 })
 
 app.listen(3000, () => {

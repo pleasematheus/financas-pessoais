@@ -8,23 +8,49 @@
       <h3 class="font-bold text-lg">Registre sua transação</h3>
       <p class="py-4">Insira as informações da sua transação</p>
 
-      <div class="flex flex-col justify-center items-center">
+      <div>
+        <form method="post" class="flex justify-center items-center w-full max-w-xl" action="/">
         <div
-          class="rounded-xl border-solid border-2 border-[#496989] p-3 w-1/2 max-w-xl"
+          class="grid grid-cols-1 rounded-xl border-solid border-2 border-[#496989] p-3 w-2/3 max-w-96 gap-3"
         >
           <input
+            id="text"
             type="text"
             placeholder="Nome"
             class="input input-bordered w-full max-w-xs"
+            name="nome"
+            autocomplete="off"
           />
+          <input
+            id="number"
+            type="number"
+            placeholder="Valor"
+            class="input input-bordered w-full max-w-xs"
+            min="0"
+            name="valor"
+            autocomplete="off"
+          />
+          <select id="tipo" class="select select-bordered w-full max-w-xs" name="opcao">
+            <option disabled selected>Tipo de gasto</option>
+            <option name="dinamico">Dinâmico</option>
+            <option name="fixo">Fixo</option>
+          </select>
+
+          <select id="movimento" class="select select-bordered w-full max-w-xs" name="movimentacao">
+            <option disabled selected>Tipo de movimentação</option>
+            <option name="entrada">Entrada</option>
+            <option name="saida">Saída</option>
+          </select>
         </div>
       </div>
 
-      <div class="modal-action">
-        <form method="dialog" class="w-full flex justify-between">
-          <button class="btn btn-error"><i class="bi bi-x-lg"></i>
-            Cancelar</button>
-          <button class="btn btn-accent"><i class="bi bi-plus-lg"></i>
+      <div class="modal-action w-full flex items-center justify-evenly">
+          <div class="tooltip" data-tip="'Esc' para fechar">
+            <kbd class="kbd"><i class="bi bi-x-circle"></i></kbd>
+          </div>
+          <button id="botaoCadastrar" class="btn btn-accent" type="submit"><i
+              class="bi bi-plus-lg"
+            ></i>
             Cadastrar</button>
         </form>
       </div>
@@ -39,22 +65,25 @@
         <tr>
           <th>ID</th>
           <th>Nome</th>
-          <th>Categoria</th>
+          <th>Tipo</th>
           <th>Valor</th>
+          <th>Movimentação</th>
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th>//ID</th>
-          <td>//Nome</td>
-          <td>//Categoria</td>
-          <td>//Valor</td>
-          <td>//Botões</td>
-        </tr>
+          {{#each registroTransacoes}}
+            <tr>
+              <th>{{this.id}}</th>
+              <td>{{this.nome}}</td>
+              <td>{{this.opcao}}</td>
+              <td>{{this.valor}}</td>
+              <td>{{this.movimentacao}}</td>
+              <td></td>
+            </tr>
+          {{/each}}
       </tbody>
     </table>
   </div>
-
 
 </div>
