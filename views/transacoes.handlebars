@@ -60,7 +60,7 @@
 
 <div class="container mx-auto my-3 px-5 w-full lg:w-9/12">
   <div class="overflow-x-auto">
-    <table class="table table-xs">
+    <table class="table table-lg">
       <thead>
         <tr>
           <th>ID</th>
@@ -73,13 +73,23 @@
       </thead>
       <tbody>
           {{#each registroTransacoes}}
-            <tr>
+            <tr class="hover">
               <th>{{this.id}}</th>
               <td>{{this.nome}}</td>
               <td>{{this.opcao}}</td>
               <td>{{this.valor}}</td>
               <td>{{this.movimentacao}}</td>
-              <td></td>
+              <td>
+                <div class="flex flex-row gap-2 items-center">
+                  <a href="/conta/editar/{{this.id}}" class="tooltip" data-tip="Editar">
+                    <i class="bi bi-pencil-square"></i>
+                  </a>
+                  <form action="/conta/excluir/{{this.id}}" class="m-0 tooltip" data-tip="Excluir">
+                    <button type="submit" >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+              </td>
             </tr>
           {{/each}}
       </tbody>

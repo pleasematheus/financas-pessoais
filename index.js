@@ -8,6 +8,14 @@ let registroTransacoes = []
 
 const app = express()
 
+const hbs = handlebars.create({
+  helpers: {
+    json: function (context) {
+      return JSON.stringify(context)
+    }
+  }
+})
+
 app.use(
   express.urlencoded({
     extended: true
@@ -54,6 +62,11 @@ app.get('/conta', (request, response) => {
 //404
 app.all('*', (request, response) => {
   response.status(404).render('erro')
+})
+
+//TODO: Fazer rota de exclusão, atualização e tratamento de erro 500
+app.post('/conta/excluir/:id/', (request, response) => {
+  response.redirect('/')
 })
 
 app.listen(3000, () => {
