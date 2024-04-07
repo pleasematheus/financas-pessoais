@@ -59,14 +59,19 @@ app.get('/conta', (request, response) => {
   response.redirect('/')
 })
 
+//TODO: Fazer rota de exclusão, atualização e tratamento de erro 500
+app.post('/conta/excluir/:id', (request, response) => {
+  const idToBeRemoved = parseInt(request.params.id)
+  const idIndex = registroTransacoes.findIndex(key => key.id === idToBeRemoved.toString())
+
+  registroTransacoes.splice(idIndex, 1)
+
+  response.redirect('/')
+})
+
 //404
 app.all('*', (request, response) => {
   response.status(404).render('erro')
-})
-
-//TODO: Fazer rota de exclusão, atualização e tratamento de erro 500
-app.post('/conta/excluir/:id/', (request, response) => {
-  response.redirect('/')
 })
 
 app.listen(3000, () => {
