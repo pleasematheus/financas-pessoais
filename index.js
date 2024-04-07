@@ -2,19 +2,9 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const { SERVER_PORT } = require('./.env')
 
-const transacoes = require('./scripts/transacoes')
-
 let registroTransacoes = []
 
 const app = express()
-
-const hbs = handlebars.create({
-  helpers: {
-    json: function (context) {
-      return JSON.stringify(context)
-    }
-  }
-})
 
 app.use(
   express.urlencoded({
@@ -34,25 +24,22 @@ app.get('/', (request, response) => {
 
 //Conta criada
 app.post('/', (request, response) => {
-  const transacao = `{
-    "id": "${registroTransacoes.length+1}",
-    "nome": "${request.body.nome}",
-    "valor": "${parseFloat(request.body.valor)
-    .toFixed(2)}",
-    "movimentacao": "${request.body.movimentacao}",
-    "opcao": "${request.body.opcao}"
-  }`
+  const { nome, valor, movimentacao, opcao} = request.body;
 
-  registroTransacoes.push(JSON.parse(transacao))
+  const id = registroTransacoes.length + 1
+  const novoValor = parseFloat(valor) || 0
 
-  console.log(registroTransacoes)
+  const transacao = {
+    id,
+    nome,
+    valor: novoValor.toFixed(2),
+    movimentacao,
+    opcao
+  }
+
+  registroTransacoes.push(transacao)
 
   response.redirect('/');
-})
-
-//Conta única
-app.get('/conta/:id', (request, response) => {
-  response.render('transacoes', { transacoes })
 })
 
 app.get('/conta', (request, response) => {
@@ -65,6 +52,41 @@ app.post('/conta/excluir/:id', (request, response) => {
   const idIndex = registroTransacoes.findIndex(key => key.id === idToBeRemoved.toString())
 
   registroTransacoes.splice(idIndex, 1)
+
+  response.status(204)
+  response.redirect('/')
+})
+
+app.get('/conta/editar/:id', (request, response) => {
+  const id = parseInt(request.params.id)
+  const idIndex = registroTransacoes.findIndex(key => key.id === id)
+  const item = registroTransacoes[idIndex]
+
+  response.render('editar', { item })
+})
+
+app.post('/conta/editar/:id', (request, response) => {
+  const {
+    nome: novoNome,
+    valor: novoValor,
+    opcao: novaOpcao,
+    movimentacao: novaMovimentacao
+  } = request.body
+
+  const id = parseInt(request.params.id)
+  const idIndex = registroTransacoes.findIndex(key => key.id === id)
+
+  // const {
+  //   nome: nomeRegistro,
+  //   valor: valorRegistro,
+  //   opcao: opcaoRegistro,
+  //   movimentacao: movimentacaoRegistro
+  // } = registroTransacoes[idIndex]
+
+  registroTransacoes[idIndex].nome = novoNome
+  registroTransacoes[idIndex].valor = novoValor
+  registroTransacoes[idIndex].opcao = novaOpcao
+  registroTransacoes[idIndex].movimentacao = novaMovimentacao
 
   response.redirect('/')
 })
