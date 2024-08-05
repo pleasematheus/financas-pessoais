@@ -1,101 +1,78 @@
+require('dotenv').config()
 const express = require('express')
 const handlebars = require('express-handlebars')
-const { SERVER_PORT } = require('./.env')
 
-let registroTransacoes = []
+const server = express()
 
-const app = express()
+const session = require('express-session')
+const FileStore = require('session-file-store')(session)
+const flash = require('express-flash')
 
-app.use(
-  express.urlencoded({
-    extended: true
+const conn = require('./db/connection')
+const authRotas = require('./routes/authRotas')
+const contaRotas = require('./routes/contaRotas')
+const receitaRotas = require('./routes/receitaRotas')
+const usuarioRotas = require('./routes/usuarioRotas')
+
+const Contas = require('./models/Contas')
+const Receitas = require('./models/Receitas')
+const Usuarios = require('./models/Usuarios')
+
+server.use(express.urlencoded({ extended: true }))
+server.use(express.json())
+server.use(express.static('public'))
+
+server.engine('handlebars', handlebars.engine())
+server.set('view engine', 'handlebars')
+
+server.use(
+  session({
+    name: 'session',
+    secret: 'amoeba',
+    resave: false,
+    saveUninitialized: false,
+    store: new FileStore({
+      logFn: () => { },
+      path: require("path").join(__dirname, "sessions")
+    }),
+    cookie: {
+      secure: false,
+      maxAge: 3600000,
+      httpOnly: true
+    }
   })
 )
 
-app.use(express.static('public'))
+server.use(flash())
 
-app.engine('handlebars', handlebars.engine())
-app.set('view engine', 'handlebars')
-
-//Home
-app.get('/', (request, response) => {
-  response.render('transacoes', { registroTransacoes })
+server.use((request, response, next) => {
+  if (request.session.userId)
+    response.locals.session = request.session
+  next()
 })
 
-//Conta criada
-app.post('/', (request, response) => {
-  const { nome, valor, movimentacao, opcao} = request.body;
+server.use('/', authRotas)
 
-  const id = registroTransacoes.length + 1
-  const novoValor = parseFloat(valor) || 0
-
-  const transacao = {
-    id,
-    nome,
-    valor: novoValor.toFixed(2),
-    movimentacao,
-    opcao
-  }
-
-  registroTransacoes.push(transacao)
-
-  response.redirect('/');
+server.get('/', (request, response) => {
+  response.render('transacoes')
 })
 
-app.get('/conta', (request, response) => {
-  response.redirect('/')
-})
+server.use('/usuario', usuarioRotas)
 
-//TODO: Fazer rota de exclusão, atualização e tratamento de erro 500
-app.post('/conta/excluir/:id', (request, response) => {
-  const idToBeRemoved = parseInt(request.params.id)
-  const idIndex = registroTransacoes.findIndex(key => key.id === idToBeRemoved.toString())
+// server.get('/cadastro', (request, response) => {
+//   response.render('cadastro', { layout: false })
+// })
 
-  registroTransacoes.splice(idIndex, 1)
+// server.get('/login', (request, response) => {
+//   response.render('login', { layout: false })
+// })
 
-  response.status(204)
-  response.redirect('/')
-})
-
-app.get('/conta/editar/:id', (request, response) => {
-  const id = parseInt(request.params.id)
-  const idIndex = registroTransacoes.findIndex(key => key.id === id)
-  const item = registroTransacoes[idIndex]
-
-  response.render('editar', { item })
-})
-
-app.post('/conta/editar/:id', (request, response) => {
-  const {
-    nome: novoNome,
-    valor: novoValor,
-    opcao: novaOpcao,
-    movimentacao: novaMovimentacao
-  } = request.body
-
-  const id = parseInt(request.params.id)
-  const idIndex = registroTransacoes.findIndex(key => key.id === id)
-
-  // const {
-  //   nome: nomeRegistro,
-  //   valor: valorRegistro,
-  //   opcao: opcaoRegistro,
-  //   movimentacao: movimentacaoRegistro
-  // } = registroTransacoes[idIndex]
-
-  registroTransacoes[idIndex].nome = novoNome
-  registroTransacoes[idIndex].valor = novoValor
-  registroTransacoes[idIndex].opcao = novaOpcao
-  registroTransacoes[idIndex].movimentacao = novaMovimentacao
-
-  response.redirect('/')
-})
-
-//404
-app.all('*', (request, response) => {
-  response.status(404).render('erro')
-})
-
-app.listen(3000, () => {
-  console.log(`Servidor iniciado: http://localhost:${SERVER_PORT}`)
-})
+conn
+  .sync()
+  .then(() => {
+    server.listen(process.env.SERVER_PORT)
+    console.log(`Servidor iniciado: http://localhost:${process.env.SERVER_PORT}`)
+  })
+  .catch((err) => {
+    console.error('Não foi possível conectar ao banco de dados:', err)
+  })

@@ -1,0 +1,5 @@
+{
+  "watch": ["controllers", "routes", "models", "db", "index.js"],
+  "ignore": ["public/*"],
+  "ext": "js,json"
+}
