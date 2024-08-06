@@ -6,10 +6,6 @@ const Contas = connection.define('Contas', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  tipo: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
   usuarioId: {
     type: DataTypes.INTEGER,
     allowNull: false,

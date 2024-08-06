@@ -26,6 +26,40 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
+    <script>
+      function validateForm(event) {
+        // Prevenir o envio do formulário se houver erros
+        event.preventDefault()
+        
+        // Obtendo os valores dos campos
+        const email = document.getElementById('email').value.trim()
+        const nome = document.getElementById('nome').value.trim()
+        const senha = document.getElementById('passw').value
+        const confirmSenha = document.getElementById('confirmPassw').value
+        
+        // Validação dos campos
+        let isValid = true;
+        let errorMessage = '';
+        
+        if (!email || !nome || !senha || !confirmSenha) {
+          errorMessage += 'Todos os campos são obrigatórios.\n'
+          isValid = false
+        }
+        
+        if (senha !== confirmSenha) {
+          errorMessage += 'As senhas não coincidem.\n'
+          isValid = false
+        }
+        
+        if (!isValid) {
+          alert(errorMessage)
+          return;
+        }
+        
+        // Se todos os campos forem válidos, envie o formulário
+        document.querySelector('form').submit();
+      }
+    </script>
   </head>
   <body>
     <header class="flex justify-between items-center">
@@ -68,8 +102,9 @@
       <div class="flex flex-col justify-center items-center gap-2">
         <form
           class="flex flex-col gap-2 rounded-lg border p-2 justify-center items-center"
-          action="/usuario/novo"
+          action="/cadastro"
           method="post"
+          onsubmit="validateForm(event)"
         >
           <p><i class="bi bi-person-add"></i> Cadastro</p>
           <label class="input input-bordered flex items-center gap-2">
@@ -162,11 +197,8 @@
             value="Cadastrar"
           />
         </form>
-        <a class="btn btn-outline btn-primary btn-wide" href="/login">Já tenho
-          uma conta</a>
+        <a class="btn btn-outline btn-primary btn-wide" href="/login">Já tenho uma conta</a>
       </div>
     </main>
   </body>
-
-
 </html>

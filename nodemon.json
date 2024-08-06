@@ -1,0 +1,5 @@
+{
+  "watch": ["controllers", "models", "routes"],
+  "ext": "handlebars",
+  "ignore": ["public"]
+}
