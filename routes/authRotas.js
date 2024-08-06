@@ -11,6 +11,6 @@ router.get('/cadastro', AuthController.signup)
 
 router.post('/cadastro', AuthController.signupPost)
 
-router.post('/sair', AuthController.logout)
+router.get('/sair', AuthController.logout)
 
 module.exports = router

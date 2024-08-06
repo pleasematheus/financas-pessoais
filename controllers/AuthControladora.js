@@ -58,8 +58,6 @@ module.exports = class AuthController {
 
     const passwHash = bcrypt.hashSync(passw, bcrypt.genSaltSync(10))
 
-    console.log(passwHash)
-
     const dados = {
       nome,
       email,
@@ -84,15 +82,8 @@ module.exports = class AuthController {
   }
 
   static makeAuthMiddleware(request, response, next) {
-    if (!request.session.userId) {
-      request.flash('erro', 'Você precisa estar autenticado para acessar a página')
-
-
-      request.session.save(() => {
-        response.redirect('/login')
-      })
-      return
-    }
+    const { ensureAuthenticated } = require('./middlewares/authMiddleware')
+    ensureAuthenticated()
     next()
   }
 }

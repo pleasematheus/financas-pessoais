@@ -10,8 +10,6 @@ const flash = require('express-flash')
 
 const conn = require('./db/connection')
 const authRotas = require('./routes/authRotas')
-const contaRotas = require('./routes/contaRotas')
-const receitaRotas = require('./routes/receitaRotas')
 const usuarioRotas = require('./routes/usuarioRotas')
 
 const Contas = require('./models/Contas')
@@ -28,7 +26,7 @@ server.set('view engine', 'handlebars')
 server.use(
   session({
     name: 'session',
-    secret: 'amoeba',
+    secret: process.env.SESSION_SECRET || 'default-secret',
     resave: false,
     saveUninitialized: false,
     store: new FileStore({
@@ -36,7 +34,7 @@ server.use(
       path: require("path").join(__dirname, "sessions")
     }),
     cookie: {
-      secure: false,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 3600000,
       httpOnly: true
     }
@@ -45,33 +43,39 @@ server.use(
 
 server.use(flash())
 
-server.use((request, response, next) => {
-  if (request.session.userId)
-    response.locals.session = request.session
+server.use((req, res, next) => {
+  if (req.session.userId) {
+    res.locals.session = req.session
+    return next()
+  }
+  if (req.path !== '/login' && req.path !== '/cadastro') {
+    return res.redirect('/login')
+  }
   next()
 })
 
 server.use('/', authRotas)
-
-server.get('/', (request, response) => {
-  response.render('transacoes')
-})
-
 server.use('/usuario', usuarioRotas)
 
-// server.get('/cadastro', (request, response) => {
-//   response.render('cadastro', { layout: false })
-// })
+// Redirecionar para /transacoes se o usuário estiver autenticado
+server.get('/', (req, res) => {
+  if (req.session.userId) {
+    return res.redirect('/transacoes')
+  }
+  res.redirect('/login')
+})
 
-// server.get('/login', (request, response) => {
-//   response.render('login', { layout: false })
-// })
+// A rota para /transacoes deve estar configurada conforme necessário
+server.get('/transacoes', (req, res) => {
+  res.render('transacoes')
+})
 
 conn
   .sync()
   .then(() => {
-    server.listen(process.env.SERVER_PORT)
-    console.log(`Servidor iniciado: http://localhost:${process.env.SERVER_PORT}`)
+    server.listen(process.env.SERVER_PORT, () => {
+      console.log(`Servidor iniciado: http://localhost:${process.env.SERVER_PORT}`)
+    })
   })
   .catch((err) => {
     console.error('Não foi possível conectar ao banco de dados:', err)

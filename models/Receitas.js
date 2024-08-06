@@ -10,14 +10,6 @@ const Receitas = connection.define('Receitas', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  isAsset: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
-  isFixedValue: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
   contaId: {
     type: DataTypes.INTEGER,
     allowNull: false,
