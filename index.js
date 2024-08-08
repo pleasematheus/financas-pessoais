@@ -53,10 +53,6 @@ server.use((req, res, next) => {
 server.use('/', authRotas)
 server.use('/usuario', usuarioRotas)
 
-<<<<<<< HEAD
-=======
-// Redirecionar para /transacoes se o usuário estiver autenticado
->>>>>>> 8531254e064a8b6494083659b9c42274f9fa94fa
 server.get('/', (req, res) => {
   if (req.session.userId) {
     return res.redirect('/transacoes')
@@ -64,10 +60,6 @@ server.get('/', (req, res) => {
   res.redirect('/login')
 })
 
-<<<<<<< HEAD
-=======
-// A rota para /transacoes deve estar configurada conforme necessário
->>>>>>> 8531254e064a8b6494083659b9c42274f9fa94fa
 server.get('/transacoes', (req, res) => {
   res.render('transacoes')
 })

@@ -8,7 +8,7 @@ module.exports = class AuthController {
   }
 
   static login(request, response) {
-    response.render('login', {layout: false})
+    response.render('login', { layout: false })
   }
 
   static async loginPost(request, response) {
@@ -18,7 +18,7 @@ module.exports = class AuthController {
     const senha = bcrypt.compareSync(passw, usuario.passw)
 
     if (!usuario || !senha) {
-      request.flash('erro', 'Usuário ou senha inválido')
+      request.flash('erro', 'Usuário ou senha inválido!')
       AuthController.login(request, response)
       return
     }
@@ -31,15 +31,14 @@ module.exports = class AuthController {
   }
 
   static signup(request, response) {
-    response.render('cadastro', {layout: false})
+    response.render('cadastro', { layout: false })
   }
 
-  //TODO: Finalizar
   static async signupPost(request, response) {
     const { nome, email, passw, confirmPassw } = request.body
 
     if (passw != confirmPassw) {
-      request.flash('erro', 'Senhas não conferem')
+      request.flash('erro', 'As senhas não são iguais!')
 
       AuthController.signup(request, response)
 
@@ -48,12 +47,10 @@ module.exports = class AuthController {
 
     const usuario = await Usuario.findOne({ where: { email: 'email' } })
 
-    if (usuario) {
-      request.flash('erro', 'Email já cadastrado')
+    if (!usuario) {
+      request.flash('erro', 'Email já cadastrado!')
 
-      AuthController.signup(request, response)
-
-      return
+      return response.redirect('/login')
     }
 
     const passwHash = bcrypt.hashSync(passw, bcrypt.genSaltSync(10))
@@ -66,7 +63,7 @@ module.exports = class AuthController {
 
     const user = await Usuario.create(dados)
 
-    request.flash('sucesso', 'Cadastro realizado com sucesso')
+    request.flash('sucesso', 'Cadastro realizado com sucesso!')
 
     request.session.userId = user.id
 
@@ -79,11 +76,5 @@ module.exports = class AuthController {
     request.session.destroy()
 
     response.redirect('/')
-  }
-
-  static makeAuthMiddleware(request, response, next) {
-    const { ensureAuthenticated } = require('./middlewares/authMiddleware')
-    ensureAuthenticated()
-    next()
   }
 }

@@ -20,8 +20,6 @@ module.exports = class UserModel {
       passw: passw
     }
 
-    console.log(dados)
-
     const usuario = await Usuario.create(dados)
 
     request.flash('sucesso','Usuário cadastrado com sucesso!')
