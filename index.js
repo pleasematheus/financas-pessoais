@@ -11,6 +11,7 @@ const flash = require('express-flash')
 const conn = require('./db/connection')
 const authRotas = require('./routes/authRotas')
 const usuarioRotas = require('./routes/usuarioRotas')
+const transacaoRotas = require('./routes/usuarioRotas')
 
 server.use(express.urlencoded({ extended: true }))
 server.use(express.json())

@@ -47,7 +47,7 @@ module.exports = class AuthController {
 
     const usuario = await Usuario.findOne({ where: { email: 'email' } })
 
-    if (!usuario) {
+    if (usuario != null) {
       request.flash('erro', 'Email já cadastrado!')
 
       return response.redirect('/login')

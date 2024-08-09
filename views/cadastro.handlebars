@@ -27,18 +27,28 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
     <script>
-      function validateForm(event) { // Prevenir o envio do formulário se houver
-      erros event.preventDefault() // Obtendo os valores dos campos const email
-      = document.getElementById('email').value.trim() const nome =
-      document.getElementById('nome').value.trim() const senha =
-      document.getElementById('passw').value const confirmSenha =
-      document.getElementById('confirmPassw').value // Validação dos campos let
-      isValid = true; let errorMessage = ''; if (!email || !nome || !senha ||
-      !confirmSenha) { errorMessage += 'Todos os campos são obrigatórios.\n'
-      isValid = false } if (senha !== confirmSenha) { errorMessage += 'As senhas
-      não coincidem.\n' isValid = false } if (!isValid) { alert(errorMessage)
-      return; } // Se todos os campos forem válidos, envie o formulário
-      document.querySelector('form').submit(); }
+      function validateForm(event); { /* Prevenir o envio do formulário se
+      houver erros */
+        event.preventDefault(); /* Obtendo os valores dos campos */
+        const email = document.getElementById('email').value.trim();
+        const nome = document.getElementById('nome').value.trim();
+        const senha = document.getElementById('passw').value;
+        const confirmSenha = document.getElementById('confirmPassw').value; /* Validação dos campos */
+        let isValid = true;
+        let errorMessage = '';
+        if (!email || !nome || !senha ||
+        !confirmSenha) {
+          errorMessage += 'Todos os campos são obrigatórios.\n';
+          isValid = false;
+        } if (senha !== confirmSenha) {
+          errorMessage += 'As senhas não coincidem.\n';
+          isValid = false;
+        } if (!isValid) {
+          alert(errorMessage)
+          return;
+        } /* Se todos os campos forem válidos, envie o formulário */
+        document.querySelector('form').submit();
+      }
     </script>
   </head>
   <body>

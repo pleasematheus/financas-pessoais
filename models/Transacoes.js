@@ -1,7 +1,7 @@
 const connection = require('../db/connection')
 const { DataTypes } = require('sequelize')
 
-const Receitas = connection.define('Receitas', {
+const Transacoes = connection.define('Transacoes', {
   valor: {
     type: DataTypes.DECIMAL,
     allowNull: false
@@ -10,21 +10,21 @@ const Receitas = connection.define('Receitas', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  contaId: {
+  usuarioId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Contas',
+      model: 'Usuarios',
       key: 'id'
     }
   }
 })
 
-Receitas.associate = function (models) {
-  Receitas.belongsTo(models.Contas, {
-    foreignKey: 'contaId',
-    as: 'conta'
+Transacoes.associate = function (models) {
+  Transacoes.belongsTo(models.Usuarios, {
+    foreignKey: 'usuarioId',
+    as: 'usuario'
   })
 }
 
-module.exports = Receitas
+module.exports = Transacoes
