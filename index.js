@@ -11,7 +11,7 @@ const flash = require('express-flash')
 const conn = require('./db/connection')
 const authRotas = require('./routes/authRotas')
 const usuarioRotas = require('./routes/usuarioRotas')
-const transacaoRotas = require('./routes/usuarioRotas')
+const transacaoRotas = require('./routes/transacaoRotas')
 
 server.use(express.urlencoded({ extended: true }))
 server.use(express.json())
@@ -52,7 +52,7 @@ server.use((req, res, next) => {
 })
 
 server.use('/', authRotas)
-server.use('/usuario', usuarioRotas)
+server.use('/transacoes', transacaoRotas)
 
 server.get('/', (req, res) => {
   if (req.session.userId) {
@@ -61,8 +61,9 @@ server.get('/', (req, res) => {
   res.redirect('/login')
 })
 
-server.get('/transacoes', (req, res) => {
-  res.render('transacoes')
+server.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Algo deu errado!')
 })
 
 conn

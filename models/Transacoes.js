@@ -2,6 +2,10 @@ const connection = require('../db/connection')
 const { DataTypes } = require('sequelize')
 
 const Transacoes = connection.define('Transacoes', {
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   valor: {
     type: DataTypes.DECIMAL,
     allowNull: false
